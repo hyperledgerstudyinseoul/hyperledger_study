@@ -1,0 +1,112 @@
+name: "Test-Network"
+x-type: "hlfv1"
+description: "The network used in the  Test"
+version: 1.0.0
+
+client:
+  organization: Org1
+  credentialStore:
+    path: "/tmp/hfc-kvs"
+    cryptoStore:
+      path: "/tmp/hfc-cvs"
+    wallet: wallet-name
+
+channels:
+  mychannel:
+    orderers:
+      - orderer.example.com
+
+    peers:
+      peer0.org1.example.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: false
+    chaincodes:
+      - samplecc:1.0
+
+organizations:
+  Org1:
+    mspid: Org1MSP
+    peers:
+      - peer0.org1.example.com
+    certificateAuthorities:
+      - ca
+    adminPrivateKey:
+      pem: |
+            -----BEGIN PRIVATE KEY-----
+            MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgosvG3Ymc+VJLca6r
+            +2I+tGpEdozOODAKRQ+jnTJ67fKhRANCAAR2ePdwLke5CwG8qPSxkf10awMxA/fY
+            qeMM876grwye940YBI2BDiz3v8ZxYutXqEsE9bhXlkQB5R5qqQkKmogU
+            -----END PRIVATE KEY-----
+    signedCert:
+#      path: src/main/resources/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/signcerts/Admin@org1.example.com-cert.pem
+      pem: |
+          -----BEGIN CERTIFICATE-----
+          MIICHDCCAcOgAwIBAgIRAOavCKsEBfRFCaqkX6LEB0owCgYIKoZIzj0EAwIwdTEL
+          MAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG
+          cmFuY2lzY28xGjAYBgNVBAoTEW9yZzEuc3dlbXBpcmUuY29tMR0wGwYDVQQDExRj
+          YS5vcmcxLnN3ZW1waXJlLmNvbTAeFw0xOTA0MDkwNTMxMDBaFw0yOTA0MDYwNTMx
+          MDBaMFwxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQH
+          Ew1TYW4gRnJhbmNpc2NvMSAwHgYDVQQDDBdBZG1pbkBvcmcxLnN3ZW1waXJlLmNv
+          bTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABHZ493AuR7kLAbyo9LGR/XRrAzED
+          99ip4wzzvqCvDJ73jRgEjYEOLPe/xnFi61eoSwT1uFeWRAHlHmqpCQqaiBSjTTBL
+          MA4GA1UdDwEB/wQEAwIHgDAMBgNVHRMBAf8EAjAAMCsGA1UdIwQkMCKAIBOBkyjJ
+          CcYXCn6WsVFNHth9uflRQaBVqFl+vniYr8qnMAoGCCqGSM49BAMCA0cAMEQCIFxK
+          7+zt2mBhVAzhZxkV0oKbUaKDUKPHFlNvA/jagWEIAiAbU7hkrZbTVjBD0eE1KTOP
+          BLFlPYUrmy/pq+MEitFYIQ==
+          -----END CERTIFICATE-----
+
+orderers:
+  orderer.example.com:
+    url: grpc://127.0.0.1:7050
+
+    grpcOptions:
+      ssl-target-name-override: orderer.example.com
+      sslProvider: openSSL
+      negotiationType: TLS
+      hostnameOverride: orderer.example.com
+      grpc-max-send-message-length: 15
+      grpc.keepalive_time_ms: 360000
+      grpc.keepalive_timeout_ms: 180000
+      allow-insecure: true
+      grpc-url: grpc://127.0.0.1:7050
+
+peers:
+  peer0.org1.example.com:
+    url: grpc://127.0.0.1:7051
+
+    grpcOptions:
+      grpc.http2.keepalive_time: 15
+      ssl-target-name-override: peer0.org1.example.com
+      negotiationType: TLS
+      sslProvider: openSSL
+      hostnameOverride: peer0.org1.example.com
+      allow-insecure: true
+      grpc-url: grpc://127.0.0.1:7051
+    tlsCACerts:
+#      path: src/main/resources/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/server.crt
+      pem: |
+          -----BEGIN CERTIFICATE-----
+          MIICbDCCAhKgAwIBAgIRAJC7+w5Jqq4Kj1V6wyuT/rgwCgYIKoZIzj0EAwIweDEL
+          MAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG
+          cmFuY2lzY28xGjAYBgNVBAoTEW9yZzEuc3dlbXBpcmUuY29tMSAwHgYDVQQDExd0
+          bHNjYS5vcmcxLnN3ZW1waXJlLmNvbTAeFw0xOTA0MDkwNTMxMDBaFw0yOTA0MDYw
+          NTMxMDBaMFwxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYD
+          VQQHEw1TYW4gRnJhbmNpc2NvMSAwHgYDVQQDExdwZWVyMC5vcmcxLnN3ZW1waXJl
+          LmNvbTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABKc1PSsIVAd1BmixDfXNyRoI
+          XT0qR8J3FgIfRN5AmJWxCwntEBza3mEfRkr65tMfdq5p0jl210rRiaVNzO4rjhSj
+          gZgwgZUwDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEF
+          BQcDAjAMBgNVHRMBAf8EAjAAMCsGA1UdIwQkMCKAIL5FXIILdhVWvjU78JLgCNWj
+          CrD5RMRTVU5IUNVxncVSMCkGA1UdEQQiMCCCF3BlZXIwLm9yZzEuc3dlbXBpcmUu
+          Y29tggVwZWVyMDAKBggqhkjOPQQDAgNIADBFAiEAk9lPEzN49GO6pyk1p/QXYVsB
+          IJ9dmFfbix6HPCWWUK8CIDTfu4jYpx3cEC3TU2XeKw9hlm81vPIOGTqDpu7RCKAx
+          -----END CERTIFICATE-----
+
+certificateAuthorities:
+  ca:
+    url: http://127.0.0.1:7054
+    registrar: #single entitiy
+      enrollId: admin
+      enrollSecret: adminpw
+    caName: ca.example.com
